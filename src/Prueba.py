@@ -15,14 +15,14 @@
 
 #def game ():
     
-movimientos="""
-Escribe 1 para mover el (numero mas alto) a la primer linea.
-Escribe 2 para mover el (numero mas alto) a la segunda linea. 
-Escribe 3 para mover el (numero mas alto) a la tercer linea
-Escribe 4 para mover el (siguiente numero) a la primer linea
-Escribe 5 para mover el (siguiente numero) a la seunda linea
-Escribe 6 para mover el (siguiente numero) a la tercer linea
-:"""
+# movimientos="""
+# Escribe 1 para mover el (numero mas alto) a la primer linea.
+# Escribe 2 para mover el (numero mas alto) a la segunda linea. 
+# Escribe 3 para mover el (numero mas alto) a la tercer linea
+# Escribe 4 para mover el (siguiente numero) a la primer linea
+# Escribe 5 para mover el (siguiente numero) a la seunda linea
+# Escribe 6 para mover el (siguiente numero) a la tercer linea
+# :"""
 
 
 numero_discos ="""
@@ -65,42 +65,54 @@ lineaA = list(range(1,discos+1))
 lineaB = []
 lineaC = []
     
-print(lineaA,lineaB,lineaC)
+#print(lineaA,lineaB,lineaC)
 
 
-mover = int(input(movimientos)) 
-    #Bucle
-#while linea3.length == discos:
-while mover == 1 or mover == 2 or mover == 3:
+# mover = int(input(movimientos)) 
+#     #Bucle
+# #while linea3.length == discos:
+# while mover == 1 or mover == 2 or mover == 3:
 
-    # determinar que discos se pueden mover
-    # los discos que se pueden mover son los que están al final de cada linea (maximo se pueden mover 3 discos)
+# determinar que discos se pueden mover
+# los discos que se pueden mover son los que están al final de cada linea (maximo se pueden mover 3 discos)
+lenA = len(lineaA)
+lenB = len(lineaB)
+lenC = len(lineaC)
+discosQueSePuedenMover = list(range(1, 4))
+movimientosPosibles = {}
+
+def calculaEstadoDelJuego(lineaA, lineaB, lineaC, discosQueSePuedenMover, movimientosPosibles):
     lenA = len(lineaA)
     lenB = len(lineaB)
     lenC = len(lineaC)
 
-    discosQueSePuedenMover = list(range(1, (1 if lenA > 0 else 0) + (1 if lenB > 0 else 0) + (1 if lenC > 0 else 0) ))
-    #def movvmientosposibles()
-    movimientosPosibles = {}
+    discosQueSePuedenMover = list(range(1, 4))
+
     if lenA > 0:
-        discosQueSePuedenMover[0] = [lineaA[len(lineaA) - 1]]
+        discosQueSePuedenMover[0] = lineaA[len(lineaA) - 1]
+    else:
+        discosQueSePuedenMover[0] = 0
 
     if lenB > 0:
-        discosQueSePuedenMover[1] = [lineaB[len(lineaB) - 1]]
-    
+        discosQueSePuedenMover[1] = lineaB[len(lineaB) - 1]
+    else:
+        discosQueSePuedenMover[1] = 0
+
     if lenC > 0:
-        discosQueSePuedenMover[2] = [lineaC[len(lineaC) - 1]]
+        discosQueSePuedenMover[2] = lineaC[len(lineaC) - 1]
+    else:
+        discosQueSePuedenMover[2] = 0
 
     # para cada disco, determinar que movimientos es posible realizar
     if lenA > 0:
         movimientosPosibles[str(discosQueSePuedenMover[0])] = []
         
-        if lenB > 0 and discosQueSePuedenMover[0] > discosQueSePuedenMover[1]:
+        if (lenB == 0) or (lenB > 0 and discosQueSePuedenMover[0] > discosQueSePuedenMover[1]):
             movimientosPosibles[str(discosQueSePuedenMover[0])].append('B')
         
-        if lenC > 0 and discosQueSePuedenMover[0] > discosQueSePuedenMover[2]:
+        if (lenC == 0) or (lenC > 0 and discosQueSePuedenMover[0] > discosQueSePuedenMover[2]):
             movimientosPosibles[str(discosQueSePuedenMover[0])].append('C')
-    
+
     if lenB > 0:
         movimientosPosibles[str(discosQueSePuedenMover[1])] = []
         
@@ -109,7 +121,7 @@ while mover == 1 or mover == 2 or mover == 3:
         
         if lenC > 0 and discosQueSePuedenMover[1] > discosQueSePuedenMover[2]:
             movimientosPosibles[str(discosQueSePuedenMover[1])].append('C')
-    
+
     if lenC > 0:
         movimientosPosibles[str(discosQueSePuedenMover[2])] = []
         
@@ -118,93 +130,137 @@ while mover == 1 or mover == 2 or mover == 3:
         
         if lenB > 0 and discosQueSePuedenMover[2] > discosQueSePuedenMover[1]:
             movimientosPosibles[str(discosQueSePuedenMover[2])].append('B')
+    
+    return discosQueSePuedenMover
+# Idea de función para determinar movimientos posibles
+# def determinaMovimientosPosibles(lenA, lenB, lenC, discosQueSePuedenMover, disco): #disco = 0, 1, 2
+#     if disco == 0:
+#         len = lenA
+#         lenNoUsado1 = lenB
+#         lenNoUsado2 = lenC
+#         discoNoUsado1 = 1
+#         discoNoUsado2 = 2
+#         lineaNoUsada1 = 'B'
+#         lineaNoUsada2 = 'C'
+#     elif disco == 1:
+#         len = lenB
+#         # TODO
+#     elif disco == 2:
+#         len = lenC
+#         # TODO
 
-    # Idea de función para determinar movimientos posibles
-    def determinaMovimientosPosibles(lenA, lenB, lenC, discosQueSePuedenMover, disco): #disco = 0, 1, 2
-        if disco == 0:
-            len = lenA
-            lenNoUsado1 = lenB
-            lenNoUsado2 = lenC
-            discoNoUsado1 = 1
-            discoNoUsado2 = 2
-            lineaNoUsada1 = 'B'
-            lineaNoUsada2 = 'C'
-        elif disco == 1:
-            len = lenB
-            # TODO
-        elif disco == 2:
-            len = lenC
-            # TODO
+#     if len > 0:
+#         movimientosPosibles[str(discosQueSePuedenMover[disco])] = []
+        
+#         if lenNoUsado1 > 0 and discosQueSePuedenMover[disco] > discosQueSePuedenMover[discoNoUsado1]:
+#             movimientosPosibles[str(discosQueSePuedenMover[disco])].append(lineaNoUsada1)
+        
+#         if lenNoUsado2 > 0 and discosQueSePuedenMover[disco] > discosQueSePuedenMover[discoNoUsado2]:
+#             movimientosPosibles[str(discosQueSePuedenMover[disco])].append(lineaNoUsada2)
 
-        if len > 0:
-            movimientosPosibles[str(discosQueSePuedenMover[disco])] = []
-            
-            if lenNoUsado1 > 0 and discosQueSePuedenMover[disco] > discosQueSePuedenMover[discoNoUsado1]:
-                movimientosPosibles[str(discosQueSePuedenMover[disco])].append(lineaNoUsada1)
-            
-            if lenNoUsado2 > 0 and discosQueSePuedenMover[disco] > discosQueSePuedenMover[discoNoUsado2]:
-                movimientosPosibles[str(discosQueSePuedenMover[disco])].append(lineaNoUsada2)
+# determinaMovimientosPosibles(lenA, lenB, lenC, discosQueSePuedenMover, 0)
+# determinaMovimientosPosibles(lenA, lenB, lenC, discosQueSePuedenMover, 1)
+# determinaMovimientosPosibles(lenA, lenB, lenC, discosQueSePuedenMover, 2)
 
-    # determinaMovimientosPosibles(lenA, lenB, lenC, discosQueSePuedenMover, 0)
-    # determinaMovimientosPosibles(lenA, lenB, lenC, discosQueSePuedenMover, 1)
-    # determinaMovimientosPosibles(lenA, lenB, lenC, discosQueSePuedenMover, 2)
+def muestraQueDiscosSePuedenMover(discos):
+    mensaje = ''
+    for disco in discos:
+        mensaje = mensaje + '\r\nSe puede mover el disco: ' + str(disco)
+    print(mensaje)
 
-    if mover == 2:
-        lineaB.append (lineaA.pop())
-        print(lineaA,lineaB,lineaC)
-        movimiento = int(input(movimientos))
-        while movimiento  > 1 or movimiento  < 6:
-            if movimiento == 1:
-                lineaA.append (lineaB.pop())
-                print(lineaA,lineaB,lineaC)
-                movimiento = int(input(movimientos))
-                while movimiento  > 1 or movimiento  < 6:
-                    if movimiento == 2:
-                        lineaB.append (lineaA.pop())
-                        print(lineaA,lineaB,lineaC)
-                        movimiento = int(input(movimientos))
-                    elif movimiento == 3:
-                        continue
-                    elif movimiento == 1:
-                        movimiento = int (input ("Este movimiento no puede realizarce actual mente,por favor intente con otro.")) 
-                    elif movimiento > 4 or movimiento < 6:
-                        movimiento = int (input ("Este movimiento no puede realizarce actual mente,por favor intente con otro."))
-                    else:
-                        movimiento =int (input ("Por favor,escribe una opcion valida:"))       
-            elif movimiento == 3:
-                lineaC.append (lineaB.pop())
-                print(lineaA,lineaB,lineaC)
-                movimiento = int(input(movimientos))
-                while movimiento  > 1 or movimiento  < 6:
-                    if movimiento == 1:
-                        lineaA.append (lineaC.pop())
-                        print(lineaA,lineaB,lineaC)
-                        movimiento = int(input(movimientos))
-                    elif movimiento == 2:
-                        reversed
-                    elif movimiento == 4:
-                        lineaB.append (lineaA.pop())
-                        print(lineaA,lineaB,lineaC)
-                        movimiento = int(input(movimientos))
-                    elif movimiento == 3:
-                        movimiento = int (input ("Este movimiento no puede realizarce actual mente,por favor intente con otro.")) 
-                    elif movimiento > 5 or movimiento < 6:
-                        movimiento = int (input ("Este movimiento no puede realizarce actual mente,por favor intente con otro."))
-                    else:
-                        movimiento =int (input ("Por favor,escribe una opcion valida:"))      
-            elif movimiento == 2:
-                movimiento = int (input ("Este movimiento no puede realizarce actual mente,por favor intente con otro."))
-            elif movimiento > 4 or movimiento < 6:
-                movimiento = int (input ("Este movimiento no puede realizarce actual mente,por favor intente con otro."))
-            else:
-                movimiento =int (input ("Por favor,escribe una opcion valida:"))
-    elif mover == 3:
-        lineaC.append (lineaA.pop())
-        print(lineaA,lineaB,lineaC)
-    elif mover == 1:
-        mover = int (input ("Este movimiento no puede realizarce actual mente,por favor intente con otro."))
-    else :
-        mover = int (input ("Por favor,escribe una opcion valida:"))
+def muestraAQueLineasSePuedenMover(movimientosPosibles, disco):
+    mensaje = ''
+    for linea in movimientosPosibles[str(disco)]:
+        mensaje = mensaje + '\r\nSe puede mover a la linea: ' + linea
+    print(mensaje)
+
+def aplicaMovimiento(disco, linea, lineaA, lineaB, lineaC):
+    lineaOrigen = []
+
+    if disco in lineaA:
+        lineaOrigen = lineaA
+    if disco in lineaB:
+        lineaOrigen = lineaB
+    if disco in lineaC:
+        lineaOrigen = lineaC
+
+    if linea == 'A':
+        lineaA.append(lineaOrigen.pop())
+    if linea == 'B':
+        lineaB.append(lineaOrigen.pop())
+    if linea == 'C':
+        lineaC.append(lineaOrigen.pop())
+
+discosQueSePuedenMover = calculaEstadoDelJuego(lineaA, lineaB, lineaC, discosQueSePuedenMover, movimientosPosibles)
+
+while len(movimientosPosibles) > 0:
+    discosQueSePuedenMover = calculaEstadoDelJuego(lineaA, lineaB, lineaC, discosQueSePuedenMover, movimientosPosibles)
+    print(lineaA,lineaB,lineaC)
+    muestraQueDiscosSePuedenMover(discosQueSePuedenMover)
+    discoAMover = int(input('Escoge un disco: '))
+    muestraAQueLineasSePuedenMover(movimientosPosibles, discoAMover)
+    lineaADondeSeVaAMover = input('Escoge a donde mover el disco: ')
+
+    aplicaMovimiento(discoAMover, lineaADondeSeVaAMover, lineaA, lineaB, lineaC)
+
+print('se acabo el juego, no hay más movimientos posibles')
+
+    # if mover == 2:
+    #     lineaB.append (lineaA.pop())
+    #     print(lineaA,lineaB,lineaC)
+    #     movimiento = int(input(movimientos))
+    #     while movimiento  > 1 or movimiento  < 6:
+    #         if movimiento == 1:
+    #             lineaA.append (lineaB.pop())
+    #             print(lineaA,lineaB,lineaC)
+    #             movimiento = int(input(movimientos))
+    #             while movimiento  > 1 or movimiento  < 6:
+    #                 if movimiento == 2:
+    #                     lineaB.append (lineaA.pop())
+    #                     print(lineaA,lineaB,lineaC)
+    #                     movimiento = int(input(movimientos))
+    #                 elif movimiento == 3:
+    #                     continue
+    #                 elif movimiento == 1:
+    #                     movimiento = int (input ("Este movimiento no puede realizarce actual mente,por favor intente con otro.")) 
+    #                 elif movimiento > 4 or movimiento < 6:
+    #                     movimiento = int (input ("Este movimiento no puede realizarce actual mente,por favor intente con otro."))
+    #                 else:
+    #                     movimiento =int (input ("Por favor,escribe una opcion valida:"))       
+    #         elif movimiento == 3:
+    #             lineaC.append (lineaB.pop())
+    #             print(lineaA,lineaB,lineaC)
+    #             movimiento = int(input(movimientos))
+    #             while movimiento  > 1 or movimiento  < 6:
+    #                 if movimiento == 1:
+    #                     lineaA.append (lineaC.pop())
+    #                     print(lineaA,lineaB,lineaC)
+    #                     movimiento = int(input(movimientos))
+    #                 elif movimiento == 2:
+    #                     reversed
+    #                 elif movimiento == 4:
+    #                     lineaB.append (lineaA.pop())
+    #                     print(lineaA,lineaB,lineaC)
+    #                     movimiento = int(input(movimientos))
+    #                 elif movimiento == 3:
+    #                     movimiento = int (input ("Este movimiento no puede realizarce actual mente,por favor intente con otro.")) 
+    #                 elif movimiento > 5 or movimiento < 6:
+    #                     movimiento = int (input ("Este movimiento no puede realizarce actual mente,por favor intente con otro."))
+    #                 else:
+    #                     movimiento =int (input ("Por favor,escribe una opcion valida:"))      
+    #         elif movimiento == 2:
+    #             movimiento = int (input ("Este movimiento no puede realizarce actual mente,por favor intente con otro."))
+    #         elif movimiento > 4 or movimiento < 6:
+    #             movimiento = int (input ("Este movimiento no puede realizarce actual mente,por favor intente con otro."))
+    #         else:
+    #             movimiento =int (input ("Por favor,escribe una opcion valida:"))
+    # elif mover == 3:
+    #     lineaC.append (lineaA.pop())
+    #     print(lineaA,lineaB,lineaC)
+    # elif mover == 1:
+    #     mover = int (input ("Este movimiento no puede realizarce actual mente,por favor intente con otro."))
+    # else :
+    #     mover = int (input ("Por favor,escribe una opcion valida:"))
         # Mostrar movimientos posibles con el estado actual
         ## Posibles movimientos: 1 a 2, 1 a 3
         ## Posibles movimientos [1, 2, 3] [4] []: 1 a 3, 2 a 3, 2 a 1
@@ -230,7 +286,7 @@ while mover == 1 or mover == 2 or mover == 3:
 
         # Mostrar el estado del juego tras el último movimiento
     
-exit (print (lineaA, lineaB, lineaC))
+#exit (print (lineaA, lineaB, lineaC))
        
     # linea1 = ["(A)"+" "+  "1","2","3"]
     # linea2 = ["(B)"+" "+ ""]
