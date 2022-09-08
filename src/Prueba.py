@@ -203,6 +203,10 @@ while len(movimientosPosibles) > 0:
 
     aplicaMovimiento(discoAMover, lineaADondeSeVaAMover, lineaA, lineaB, lineaC)
 
+    if lineaC == list(range(1,discos+1)):
+        break
+
+print(lineaA, lineaB, lineaC)
 print('se acabo el juego, no hay más movimientos posibles')
 
     # if mover == 2:
